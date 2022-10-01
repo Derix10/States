@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<State> states = new ArrayList<>();
-    public static String KEY = "bundle.key" , KEY2 = "bundle.key2", KEY3 = "bundle.key3", KEY4 = "hhh";
+    public static String KEY = "bundle.key" , KEY2 = "bundle.key2", KEY3 = "bundle.key3";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,22 +20,14 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         BlankFragment blankFragment = new BlankFragment();
 
-
-
-
-
-        StateAdapter.OnStateClickListener stateClickListener = new StateAdapter.OnStateClickListener() {
-            @Override
-            public void onStateClick(State state, int position) {
-                bundle.putString(KEY2,state.getCapital());
-                bundle.putString(KEY, state.getName());
-                bundle.putInt(KEY4, position);
-                bundle.putString(KEY3, state.getFlagResource());
-                blankFragment.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().add(R.id.conteiner, blankFragment).addToBackStack(null).commit();
-                Toast.makeText(getApplicationContext(), "Был выбран пункт " + state.getName(),
-                        Toast.LENGTH_SHORT).show();
-            }
+        StateAdapter.OnStateClickListener stateClickListener = (state, position) -> {
+            bundle.putString(KEY2,state.getCapital());
+            bundle.putString(KEY, state.getName());
+            bundle.putString(KEY3, state.getFlagResource());
+            blankFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().add(R.id.conteiner, blankFragment).addToBackStack(null).commit();
+            Toast.makeText(getApplicationContext(), "Был выбран пункт " + state.getName(),
+                    Toast.LENGTH_SHORT).show();
         };
         StateAdapter adapter = new StateAdapter(this, states,stateClickListener);
         recyclerView.setAdapter(adapter);

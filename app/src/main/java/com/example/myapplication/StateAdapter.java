@@ -2,17 +2,12 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
 public class StateAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -25,8 +20,9 @@ public class StateAdapter extends RecyclerView.Adapter<ViewHolder> {
         this.onStateClick = onStateClick;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = inflater.inflate(R.layout.item_name, parent, false);
         return new ViewHolder(view);
@@ -34,21 +30,15 @@ public class StateAdapter extends RecyclerView.Adapter<ViewHolder> {
     interface OnStateClickListener{
         void onStateClick(State state, int position);
     }
-    private ImageView imageView;
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         State state = states.get(position);
         holder.nameView.setText(state.getName());
         holder.capitalView.setText(state.getCapital());
         Picasso.get().load(state.getFlagResource()).into(holder.flagView);
-        holder.itemView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v)
-            {
-                // вызываем метод слушателя, передавая ему данные
-                onStateClick.onStateClick(state, position);
-            }
-    });
+        holder.itemView.setOnClickListener(v -> {
+            onStateClick.onStateClick(state, position);
+        });
 
 }
 
